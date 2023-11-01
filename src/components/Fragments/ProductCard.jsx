@@ -6,9 +6,9 @@ import { Button } from "../Elements/Button/Button";
 export const ProductCard = (props) => {
   const { children } = props;
   return (
-    <div className="w-full max-w-sm bg-slate-700 border-700 border-gray-200 rounded-lg shadow mx-3">
-      {children}
-    </div>
+      <div className="w-full max-w-sm bg-slate-700 border-700 border-gray-200 rounded-lg shadow flex justify-between flex-col">
+        {children}
+      </div>
   );
 };
 
@@ -26,12 +26,12 @@ const Header = (props) => {
 };
 
 const Body = (props) => {
-  const { children, title } = props;
+  const { children, name } = props;
   return (
-    <div className="px-8 p-3">
+    <div className="px-8 p-3 h-full">
       <a href="">
         <h5 className="text-xl font-bold tracking-tighter text-green-500">
-          {title}
+          {name}
         </h5>
         <p className="text-s text-justify text-white">{children}</p>
       </a>
