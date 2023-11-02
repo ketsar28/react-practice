@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-key */
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { ProductCard } from "../components/Fragments/ProductCard";
 import { Button } from "../components/Elements/Button/Button";
 import { Counter } from "../components/Elements/Button/Counter";
@@ -37,12 +38,26 @@ const products = [
 const user = localStorage.getItem("email");
 
 export const ProductPage = () => {
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      qty: 1,
-    },
-  ]);
+  const [cart, setCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  // ! componentDidMount()
+  useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem("cart")) || []);
+  }, []);
+
+  // ! componenetDidUpdate()
+  useEffect(() => {
+   if(cart.length > 0) {
+    const sum = cart.reduce((acc, current) => {
+      const product = products.find((product) => product.id === current.id);
+      return acc + product.price * current.qty;
+    }, 0);
+    setTotalPrice(sum);
+    localStorage.setItem("cart", JSON.stringify(cart))
+   }
+  }, [cart]);
+
   const handleAddToCart = (id) => {
     if (cart.find((item) => item.id === id)) {
       setCart(
@@ -118,13 +133,28 @@ export const ProductPage = () => {
                   </tr>
                 );
               })}
+              <tr>
+                <td colSpan={3}>
+                  <b>Total Price</b>
+                </td>
+                <td>
+                  <b>
+                    {" "}
+                    Rp.{" "}
+                    {totalPrice.toLocaleString("id-ID", {
+                      styles: "currency",
+                      currency: "IDR",
+                    })}
+                  </b>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div className="mt-5 flex justify-center mb-20">
+      {/* <div className="mt-5 flex justify-center mb-20">
         <Counter></Counter>
-      </div>
+      </div> */}
     </Fragment>
   );
 };
