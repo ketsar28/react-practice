@@ -5,18 +5,31 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { ProductCard } from "../components/Fragments/ProductCard";
 import { Button } from "../components/Elements/Button/Button";
 import { Counter } from "../components/Elements/Button/Counter";
-import { getProduct } from "../services/product.service";
-
-const user = localStorage.getItem("email");
+import { getProduct, getUsername } from "../services/product.service";
 
 export const ProductPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProduct] = useState([]);
+  const [username, setUsername] = useState("");
+
+  const cartRef = useRef(JSON.parse(localStorage.getItem("cart")) || []);
+  const totalPriceRef = useRef(null);
 
   // ! componentDidMount()
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUsername(getUsername(token));
+      console.log(setUsername(getUsername(token)));
+    } else {
+      console.log();
+      window.location.href = "/login";
+    }
   }, []);
 
   // ! componenetDidUpdate()
@@ -30,21 +43,6 @@ export const ProductPage = () => {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   }, [cart, products]);
-
-  const handleAddToCart = (id) => {
-    if (cart.find((item) => item.id === id)) {
-      setCart(
-        cart.map((item) =>
-          item.id === id ? { ...item, qty: item.qty + 1 } : item
-        )
-      );
-    } else {
-      setCart([...cart, { id, qty: 1 }]);
-    }
-  };
-
-  const cartRef = useRef(JSON.parse(localStorage.getItem("cart")) || []);
-  const totalPriceRef = useRef(null);
 
   useEffect(() => {
     if (cart.length > 0) {
@@ -66,15 +64,26 @@ export const ProductPage = () => {
     localStorage.setItem("cart", JSON.stringify(cartRef.current));
   };
 
+  const handleAddToCart = (id) => {
+    if (cart.find((item) => item.id === id)) {
+      setCart(
+        cart.map((item) =>
+          item.id === id ? { ...item, qty: item.qty + 1 } : item
+        )
+      );
+    } else {
+      setCart([...cart, { id, qty: 1 }]);
+    }
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
+    localStorage.removeItem("token");
     window.location.href = "/login";
   };
   return (
     <Fragment>
       <div className="flex justify-end h-20 items-center bg-green-500 px-10 gap-5">
-        <span className="text-white font-bold">{user}</span>
+        <span className="text-white font-bold">{username}</span>
         <Button variant="bg-red-600" text="Sign Out" onClick={handleLogout} />
       </div>
       <div className="flex py-5">

@@ -1,4 +1,6 @@
 import axios from "axios"
+import { jwtDecode } from "jwt-decode";
+
 
 export const getProduct = (callback) => {
     axios.get("https://fakestoreapi.com/products")
@@ -8,4 +10,10 @@ export const getProduct = (callback) => {
     .catch(err => {
         console.log(err);
     })
+}
+
+export const getUsername = (token) => {
+    const decoded = jwtDecode(token);
+    console.log(decoded);
+    return decoded.user;
 }
