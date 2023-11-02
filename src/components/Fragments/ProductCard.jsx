@@ -19,7 +19,7 @@ const Header = (props) => {
       <img
         src={image}
         alt={alt}
-        className="p-8 rounded-t-lg max-h-60 min-w-full"
+        className="p-8 rounded-t-lg h-60 w-full object-cover"
       />
     </a>
   );
@@ -31,9 +31,9 @@ const Body = (props) => {
     <div className="px-8 p-3 h-full">
       <a href="">
         <h5 className="text-xl font-bold tracking-tighter text-green-500">
-          {name}
+          {name.substring(0, 20)}...
         </h5>
-        <p className="text-s text-justify text-white">{children}</p>
+        <p className="text-s text-justify text-white">{children.substring(0, 100)}...</p>
       </a>
     </div>
   );
@@ -43,7 +43,7 @@ const Footer = (props) => {
   const { price, handleAddToCart, id } = props;
   return (
     <div className="flex items-center justify-between px-7 p-3">
-      <span className="text-xl font-bold text-white">Rp. {price.toLocaleString('id-ID', {styles: 'currency', currency: 'IDR'})}</span>
+      <span className="text-xl font-bold text-white">$. {price.toLocaleString('id-ID', {styles: 'currency', currency: 'USD'})}</span>
       <Button variant="bg-green-600" text="Add" onClick={() => handleAddToCart(id)} />
     </div>
   );
