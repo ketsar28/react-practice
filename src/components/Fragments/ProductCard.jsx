@@ -6,7 +6,7 @@ import { Button } from "../Elements/Button/Button";
 export const ProductCard = (props) => {
   const { children } = props;
   return (
-      <div className="w-full max-w-sm bg-slate-700 border-700 border-gray-200 rounded-lg shadow flex justify-between flex-col">
+      <div className="w-full max-w-xs bg-slate-700 border-700 border-gray-200 rounded-lg shadow flex justify-between flex-col">
         {children}
       </div>
   );
@@ -40,11 +40,11 @@ const Body = (props) => {
 };
 
 const Footer = (props) => {
-  const { price } = props;
+  const { price, handleAddToCart, id } = props;
   return (
     <div className="flex items-center justify-between px-7 p-3">
-      <span className="text-xl font-bold text-white">{price}</span>
-      <Button variant="bg-green-600" text="Add To Cart" />
+      <span className="text-xl font-bold text-white">Rp. {price.toLocaleString('id-ID', {styles: 'currency', currency: 'IDR'})}</span>
+      <Button variant="bg-green-600" text="Add" onClick={() => handleAddToCart(id)} />
     </div>
   );
 };
