@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-key */
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { ProductCard } from "../components/Fragments/ProductCard";
 import { Button } from "../components/Elements/Button/Button";
 import { Counter } from "../components/Elements/Button/Counter";
@@ -48,14 +49,14 @@ export const ProductPage = () => {
 
   // ! componenetDidUpdate()
   useEffect(() => {
-   if(cart.length > 0) {
-    const sum = cart.reduce((acc, current) => {
-      const product = products.find((product) => product.id === current.id);
-      return acc + product.price * current.qty;
-    }, 0);
-    setTotalPrice(sum);
-    localStorage.setItem("cart", JSON.stringify(cart))
-   }
+    if (cart.length > 0) {
+      const sum = cart.reduce((acc, current) => {
+        const product = products.find((product) => product.id === current.id);
+        return acc + product.price * current.qty;
+      }, 0);
+      setTotalPrice(sum);
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
   }, [cart]);
 
   const handleAddToCart = (id) => {
@@ -69,6 +70,23 @@ export const ProductPage = () => {
       setCart([...cart, { id, qty: 1 }]);
     }
   };
+
+  const cartRef = useRef(JSON.parse(localStorage.getItem("cart")) || []);
+  const totalPriceRef = useRef(null);
+
+  useEffect(() => {
+    if(cart.length > 0) {
+      totalPriceRef.current.style.display = "table-row"
+    } else {
+      totalPriceRef.current.style.display = "none"
+    }
+  } ,[cart])
+
+  const handleAddToCartRef = (id) => {
+    cartRef.current = [...cartRef.current, { id, qty:1 }];
+    localStorage.setItem("cart", JSON.stringify(cartRef.current));
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("password");
@@ -133,7 +151,7 @@ export const ProductPage = () => {
                   </tr>
                 );
               })}
-              <tr>
+              <tr ref={totalPriceRef}>
                 <td colSpan={3}>
                   <b>Total Price</b>
                 </td>
