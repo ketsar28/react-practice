@@ -6,12 +6,13 @@ import { ProductCard } from "../components/Fragments/ProductCard";
 import { Button } from "../components/Elements/Button/Button";
 import { Counter } from "../components/Elements/Button/Counter";
 import { getProduct, getUsername } from "../services/product.service";
+import { useLogin } from "../hooks/useLogin";
 
 export const ProductPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProduct] = useState([]);
-  const [username, setUsername] = useState("");
+  const username = useLogin();
 
   const cartRef = useRef(JSON.parse(localStorage.getItem("cart")) || []);
   const totalPriceRef = useRef(null);
@@ -19,17 +20,6 @@ export const ProductPage = () => {
   // ! componentDidMount()
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
-  }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUsername(getUsername(token));
-      console.log(setUsername(getUsername(token)));
-    } else {
-      console.log();
-      window.location.href = "/login";
-    }
   }, []);
 
   // ! componenetDidUpdate()
@@ -80,10 +70,18 @@ export const ProductPage = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
   };
+  const handleProfile = () => {
+    window.location.href = "/profiles";
+  };
   return (
     <Fragment>
       <div className="flex justify-end h-20 items-center bg-green-500 px-10 gap-5">
         <span className="text-white font-bold">{username}</span>
+        <Button
+          variant="bg-teal-800"
+          text="Profile"
+          onClick={handleProfile}
+        />
         <Button variant="bg-red-600" text="Sign Out" onClick={handleLogout} />
       </div>
       <div className="flex py-5">
