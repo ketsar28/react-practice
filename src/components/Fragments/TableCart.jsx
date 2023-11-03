@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { DarkMode } from "../../context/DarkMode";
 
 export const TableCart = (props) => {
   const { products } = props;
   const totalPriceRef = useRef(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const {isDarkMode} = useContext(DarkMode);
 
   const cart = useSelector((state) => state.cart.data);
 
@@ -30,7 +32,7 @@ export const TableCart = (props) => {
   }, [cart]);
 
   return (
-    <table className="text-left table-auto border-separate border-spacing-x-5">
+    <table className={`text-left table-auto border-separate border-spacing-x-5 ${isDarkMode && "text-white"}`}>
       <thead>
         <tr>
           <th>Product</th>

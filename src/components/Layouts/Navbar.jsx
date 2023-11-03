@@ -1,14 +1,16 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLogin } from "../../hooks/useLogin";
 import { Button } from "../Elements/Button/Button";
 import { useSelector } from "react-redux";
+import { DarkMode } from "../../context/DarkMode";
 
 export const Navbar = () => {
   const username = useLogin();
   // mengambil data product yang ada di cart
   const cart = useSelector((state) => state.cart.data);
   const [totalCart, setTotalCart] = useState(0);
+  const {isDarkMode, setIsDarkMode} = useContext(DarkMode);
 
   // ! componentDidMount = merubah value sebelumnya ketika terjadi event
   useEffect(() => {
@@ -35,6 +37,12 @@ export const Navbar = () => {
       <div className="flex items-center p-3 font-bold rounded-full bg-slate-900 text-white">
         {totalCart}
       </div>
+      <Button
+          variant={`bg-slate-800 ${isDarkMode && "bg-white text-black"}`}
+          onClick={() => setIsDarkMode(!isDarkMode)}
+          text={isDarkMode ? "Light" : "Dark"}
+        />
+          
     </div>
   );
 };
