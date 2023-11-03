@@ -4,13 +4,15 @@ import { useLogin } from "../../hooks/useLogin";
 import { Button } from "../Elements/Button/Button";
 import { useSelector } from "react-redux";
 import { DarkMode } from "../../context/DarkMode";
+import { useTotalPrice } from "../../context/TotalPriceContext";
 
 export const Navbar = () => {
   const username = useLogin();
   // mengambil data product yang ada di cart
   const cart = useSelector((state) => state.cart.data);
   const [totalCart, setTotalCart] = useState(0);
-  const {isDarkMode, setIsDarkMode} = useContext(DarkMode);
+  const { isDarkMode, setIsDarkMode } = useContext(DarkMode);
+  const { total } = useTotalPrice();
 
   // ! componentDidMount = merubah value sebelumnya ketika terjadi event
   useEffect(() => {
@@ -35,14 +37,13 @@ export const Navbar = () => {
       <Button variant="bg-teal-800" text="Profile" onClick={handleProfile} />
       <Button variant="bg-red-600" text="Sign Out" onClick={handleLogout} />
       <div className="flex items-center p-3 font-bold rounded-full bg-slate-900 text-white">
-        {totalCart}
+        Item : {totalCart} | Price : {total}
       </div>
       <Button
-          variant={`bg-slate-800 ${isDarkMode && "bg-white text-black"}`}
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          text={isDarkMode ? "Light" : "Dark"}
-        />
-          
+        variant={`bg-slate-800`}
+        onClick={() => setIsDarkMode(!isDarkMode)}
+        text={isDarkMode ? "Light" : "Dark"}
+      />
     </div>
   );
 };
