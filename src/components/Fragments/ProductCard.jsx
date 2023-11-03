@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 
 import { Link } from "react-router-dom";
 import { Button } from "../Elements/Button/Button";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/slices/cartSlice";
 
 export const ProductCard = (props) => {
   const { children } = props;
@@ -44,6 +47,7 @@ const Body = (props) => {
 
 const Footer = (props) => {
   const { price, handleAddToCart, id } = props;
+  const dispatch = useDispatch();
   return (
     <div className="flex items-center justify-between px-7 p-3">
       <span className="text-xl font-bold text-white">
@@ -53,7 +57,7 @@ const Footer = (props) => {
       <Button
         variant="bg-green-600"
         text="Add"
-        onClick={() => handleAddToCart(id)}
+        onClick={() => dispatch(addToCart({ id, qty: 1 }))}
       />
     </div>
   );
