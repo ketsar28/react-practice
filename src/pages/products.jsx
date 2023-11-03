@@ -77,20 +77,20 @@ export const ProductPage = () => {
     <Fragment>
       <div className="flex justify-end h-20 items-center bg-green-500 px-10 gap-5">
         <span className="text-white font-bold">{username}</span>
-        <Button
-          variant="bg-teal-800"
-          text="Profile"
-          onClick={handleProfile}
-        />
+        <Button variant="bg-teal-800" text="Profile" onClick={handleProfile} />
         <Button variant="bg-red-600" text="Sign Out" onClick={handleLogout} />
       </div>
       <div className="flex py-5">
         <div className="xl:w-4/6 w-2/4 flex flex-wrap justify-center gap-5">
           {products.length > 0 &&
-            products.map((product, key) => (
-              <ProductCard key={key}>
-                <ProductCard.Header image={product.image} alt={product.alt} />
-                <ProductCard.Body name={product.title}>
+            products.map((product) => (
+              <ProductCard key={product.id}>
+                <ProductCard.Header
+                  image={product.image}
+                  alt={product.alt}
+                  id={product.id}
+                />
+                <ProductCard.Body name={product.title} id={product.id}>
                   {product.description}
                 </ProductCard.Body>
                 <ProductCard.Footer

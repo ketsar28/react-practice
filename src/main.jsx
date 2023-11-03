@@ -8,6 +8,7 @@ import { ErrorPage } from "./pages/notfound.jsx";
 import { ProductPage } from "./pages/products.jsx";
 import { ProfilePage } from "./pages/profile.jsx";
 import { LoginPage } from "./pages/login.jsx";
+import { DetailProductPage } from "./pages/detailProduct.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/profiles",
     element: <ProfilePage />,
+  },
+  {
+    path: "/products/:id",
+    element: <DetailProductPage />,
   },
 ]);
 
